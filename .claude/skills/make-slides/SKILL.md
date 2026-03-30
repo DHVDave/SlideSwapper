@@ -25,23 +25,33 @@ The user's request: $ARGUMENTS
 
 ## Step 2: Convert to PowerPoint
 
-Run the converter:
+Use the `/html-to-pptx` skill to convert:
+
+```
+/html-to-pptx presentation.html presentation.pptx
+```
+
+If the `/html-to-pptx` skill is not available, follow these steps manually:
+
+1. Ensure dependencies are installed:
+
+```bash
+pip install playwright python-pptx Pillow 2>/dev/null
+playwright install chromium 2>/dev/null
+```
+
+2. Check if `html_to_pptx.py` exists in the current directory or repo root. If not, create it using the converter script embedded in the `/html-to-pptx` skill documentation, or write it fresh following the same pattern: use Playwright to screenshot each `<section>` element, then use python-pptx to assemble them into a widescreen .pptx.
+
+3. Run:
 
 ```bash
 python html_to_pptx.py presentation.html -o presentation.pptx
 ```
 
-If Chromium is not found by Playwright, try:
+4. If Playwright can't find Chromium:
 
 ```bash
-PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=$(find /root/.cache -name "chrome" -path "*/chrome-linux/*" 2>/dev/null | head -1) python html_to_pptx.py presentation.html -o presentation.pptx
-```
-
-If dependencies are missing:
-
-```bash
-pip install -r requirements.txt
-playwright install chromium
+PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=$(find ~/.cache -name "chrome" -path "*/chrome-linux/*" 2>/dev/null | head -1) python html_to_pptx.py presentation.html -o presentation.pptx
 ```
 
 ## Step 3: Confirm
